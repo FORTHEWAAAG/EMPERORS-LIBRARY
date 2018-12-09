@@ -5,7 +5,7 @@
 #include <string>
 #include <thread>
 #include <vector>
-#include <math.h>
+#include <cmath>
 #include <iomanip>
 
 using namespace std;
@@ -85,7 +85,8 @@ size_t GetActiveTime(CPUData & e){
               e.times[S_GUEST_NICE];
 }
 
-string PrintStats(vector<CPUData> & entries1, vector<CPUData> & entries2, double & _cp ) {
+string PrintStats(vector<CPUData> & entries1, vector<CPUData> & entries2) {
+    static double _cp;
     for (size_t i = 0; i < 1; ++i) {
         CPUData &e1 = entries1[i];
         CPUData &e2 = entries2[i];
@@ -98,15 +99,12 @@ string PrintStats(vector<CPUData> & entries1, vector<CPUData> & entries2, double
     }
 
 string get_cpu(){
-    double _cp;
     vector<CPUData> entries1;
     vector<CPUData> entries2;
-
     ReadStatsCPU(entries1);
     this_thread::sleep_for(chrono::milliseconds(200));
     ReadStatsCPU(entries2);
-    PrintStats(entries1, entries2, _cp);
-    return to_string(_cp)+"/";
+    return PrintStats(entries1, entries2);
 }
 
 string cpu_num(){

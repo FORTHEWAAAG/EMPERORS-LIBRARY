@@ -19,8 +19,15 @@ class Server
 {
 private:
     uint16_t port=44300;
-    struct sockaddr_in serverAddress;
-    struct sockaddr_in clientAddress;
+/*
+    struct sockaddr_in{
+        short   sin_family;
+        u_short sin_port;
+        struct  in_addr sin_addr;
+        char    sin_zero[256];
+    };*/
+
+    struct sockaddr_in serverAddress, clientAddress;
 
 public:
     int sockfd, newsockfd;
@@ -79,7 +86,7 @@ void Server::conn(){
 void Server::Send(string data){
     message = new char[data.length()];
     strcpy(message, data.c_str());
-    send(newsockfd, message, sizeof(message), 0);
+    write(newsockfd, message, sizeof(message));
 }
 
 void Server::off(){
