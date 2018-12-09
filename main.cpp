@@ -5,15 +5,16 @@
 
 int main() {
     string data;
-    Server cnct;
-    cnct.set_up();
+    auto cnct = new Server;
+    cnct->set_up();
 
-    cnct.conn();
+    cnct->conn();
     data = cpu_num()+get_cpu()+process_mem_usage()+physical_mem_usage();
-    cnct.Send(data);
+    cout << data <<endl;
+    cnct->Snd(data);
     sleep(5);
 
-    cnct.off();
+    cnct->off();
     return 0;
 }
 
