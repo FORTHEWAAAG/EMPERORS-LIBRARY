@@ -8,7 +8,12 @@
 #include <cmath>
 #include <iomanip>
 
-using namespace std;
+using std::thread;
+using std::string;
+using std::ifstream;
+using std::vector;
+using std::istringstream;
+using std::chrono::milliseconds;
 
 const int NUM_CPU_STATES = 10;
 
@@ -102,7 +107,7 @@ string get_cpu(){
     vector<CPUData> entries1;
     vector<CPUData> entries2;
     ReadStatsCPU(entries1);
-    this_thread::sleep_for(chrono::milliseconds(200));
+    std::this_thread::sleep_for(std::chrono::milliseconds(200));
     ReadStatsCPU(entries2);
     return PrintStats(entries1, entries2);
 }
