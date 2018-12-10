@@ -29,6 +29,7 @@ public:
     Server();
     ~Server();
     void set_up();
+    bool access();
     void conn();
     void Snd(string data);
     void off();
@@ -53,27 +54,26 @@ Server::~Server(){
     memset(message, 0, sizeof(*message));
     memset(&serverAddress,0,sizeof(serverAddress));
     close(sockfd);
-    close(newsockfd);
 }
 
 void Server::set_up(){
     if((bind(sockfd,(struct sockaddr *)&serverAddress, sizeof(serverAddress)))<0) {
         cerr << "Error of binding";
-        //socklen_t sndbuf = 512;
-        //setsockopt(sockfd, IPPROTO_TCP, SO_REUSEADDR, &sndbuf, sizeof(sndbuf));
+        socklen_t sndbuf = 512;
+        setsockopt(sockfd, IPPROTO_TCP, SO_REUSEADDR, &sndbuf, sizeof(sndbuf));
     }
 }
 
-void Server::conn(){
+void Server::conn() {
     listen(sockfd, 1);
-    newsockfd=accept(sockfd, (struct sockaddr*)&clientAddress, (socklen_t*)&len);
-    if(newsockfd<0) {
+    newsockfd = accept(sockfd, (struct sockaddr *) &clientAddress, (socklen_t *) &len);
+    if (newsockfd < 0) {
         cerr << "Acception error";
     };
+}
 
-    if(!gethostbyname("127.0.0.1")) {
-        cerr << "Host is unreachable";
-    }
+bool Server::access(){
+    return gethostbyname("127.0.0.1");
 }
 
 void Server::Snd(string data){
@@ -83,6 +83,5 @@ void Server::Snd(string data){
 }
 
 void Server::off(){
-    close(sockfd);
     close(newsockfd);
 }
