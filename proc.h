@@ -2,7 +2,7 @@
 #include <fstream>
 #include <iostream>
 #include <sstream>
-#include <string>
+#include <string.h>
 #include <thread>
 #include <vector>
 #include <cmath>
@@ -10,6 +10,7 @@
 
 using std::thread;
 using std::string;
+using std::to_string;
 using std::ifstream;
 using std::vector;
 using std::istringstream;
@@ -90,7 +91,7 @@ size_t GetActiveTime(CPUData & e){
               e.times[S_GUEST_NICE];
 }
 
-string PrintStats(vector<CPUData> & entries1, vector<CPUData> & entries2) {
+double PrintStats(vector<CPUData> & entries1, vector<CPUData> & entries2) {
     static double _cp;
     for (size_t i = 0; i < 1; ++i) {
         CPUData &e1 = entries1[i];
@@ -100,10 +101,10 @@ string PrintStats(vector<CPUData> & entries1, vector<CPUData> & entries2) {
         double TOTAL_TIME = ACTIVE_TIME + IDLE_TIME;
         _cp = 100.f * ACTIVE_TIME / TOTAL_TIME;
     }
-        return to_string(floor(_cp*100)/100)+"/";
+        return floor(_cp*100)/100;
     }
 
-string get_cpu(){
+double get_cpu(){
     vector<CPUData> entries1;
     vector<CPUData> entries2;
     ReadStatsCPU(entries1);
@@ -112,6 +113,6 @@ string get_cpu(){
     return PrintStats(entries1, entries2);
 }
 
-string cpu_num(){
-    return to_string(sysconf(_SC_NPROCESSORS_ONLN))+"/";
+int cpu_num(){
+    return (int)sysconf(_SC_NPROCESSORS_ONLN);
 }

@@ -1,38 +1,33 @@
-#include <iostream>
 #include <assert.h>
-#include <vector>
-#include <string.h>
 #include <unistd.h>
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
-#include <string.h>
 #include <netdb.h>
 #include <arpa/inet.h>
-#include <pthread.h>
+#include "proc.h"
+#include "memory.h"
 
 using std::cerr;
-using std::string;
-using std::to_string;
 
 class Server
 {
 private:
-    uint16_t port=44301;
+    uint16_t port=44300;
     uint32_t from_addr;
     uint32_t to_addr;
     struct sockaddr_in serverAddress, clientAddress;
 
 public:
-    int sockfd, newsockfd;
-    char * message;
+    char Format();
     Server();
     ~Server();
     void set_up();
     bool access();
     void conn();
-    void Snd(string data);
+    bool Snd();
     void off();
+    int sockfd, newsockfd;
     socklen_t len;
 };
 
@@ -51,16 +46,14 @@ Server::Server(){
 }
 
 Server::~Server(){
-    memset(message, 0, sizeof(*message));
-    memset(&serverAddress,0,sizeof(serverAddress));
     close(sockfd);
 }
 
 void Server::set_up(){
     if((bind(sockfd,(struct sockaddr *)&serverAddress, sizeof(serverAddress)))<0) {
         cerr << "Error of binding";
-        socklen_t sndbuf = 512;
-        setsockopt(sockfd, IPPROTO_TCP, SO_REUSEADDR, &sndbuf, sizeof(sndbuf));
+        socklen_t enabled = 1;
+        setsockopt(sockfd, IPPROTO_TCP, SO_REUSEADDR, &enabled, sizeof(enabled));
     }
 }
 
@@ -76,10 +69,24 @@ bool Server::access(){
     return gethostbyname("127.0.0.1");
 }
 
-void Server::Snd(string data){
-    char message[data.length()+1];
+char Server::Format(){
+    double _num = cpu_num();
+    double _cpu = get_cpu();
+    double *_ram = process_mem_usage();
+    double *_load = _ram + 1;
+    double *_hdd = physical_mem_usage();
+    double *_eng = _hdd + 1;
+    using std::cout;
+    using std::endl;
+    cout <<*_ram<<endl<<*_load<<endl<<*_hdd<<endl<<*_eng<<endl;
+}
+
+bool Server::Snd(){
+    Server::Format();
+    /*char message[data.length()+1];
     strcpy(message, data.c_str());
-    send(newsockfd, &message, sizeof(message), 0);
+    return send(newsockfd, &message, sizeof(message), 0);*/
+    return true;
 }
 
 void Server::off(){
