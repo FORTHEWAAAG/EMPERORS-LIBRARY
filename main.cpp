@@ -10,8 +10,6 @@ int main() {
     cnct->set_up();
     while(cnct->access()){
         cnct->conn();
-        //data = cpu_num() + get_cpu() + process_mem_usage() + physical_mem_usage();
-        cout << data << endl;
         cnct->Snd();
         cnct->off();
         sleep(5);
