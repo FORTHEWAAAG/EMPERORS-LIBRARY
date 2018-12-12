@@ -79,14 +79,13 @@ char Server::Format(){
     using std::cout;
     using std::endl;
     cout <<*_ram<<endl<<*_load<<endl<<*_hdd<<endl<<*_eng<<endl;
+
 }
 
 bool Server::Snd(){
-    Server::Format();
-    /*char message[data.length()+1];
-    strcpy(message, data.c_str());
-    return send(newsockfd, &message, sizeof(message), 0);*/
-    return true;
+    Format();
+    //char * message = Server::Format();
+    //return send(newsockfd, &message, sizeof(message), 0)==0;
 }
 
 void Server::off(){
