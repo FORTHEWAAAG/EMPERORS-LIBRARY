@@ -12,7 +12,7 @@ using std::cerr;
 class Server
 {
 private:
-    uint16_t port=44301;
+    uint16_t port=44300;
     uint32_t from_addr;
     uint32_t to_addr;
     struct sockaddr_in serverAddress, clientAddress;
@@ -69,8 +69,10 @@ bool Server::access(){
 
 bool Server::Snd(){
     auto *metrics =new data;
+    //data metrics;
     char message = metrics->telemetry_format();
-
+    //data metrics;
+    //char *message = metrics.telemetry_format();
     return send(newsockfd, &message, sizeof(message), 0)==0;
 }
 

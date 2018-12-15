@@ -20,7 +20,8 @@ public:
 char data::telemetry_format(){
     std::stringstream ss;
     ss<<_num<<"/"<<_cpu<<"/"<<*_ram<<"/"<<*(_ram+1)<<"/"<<*_hdd<<"/"<<*(_hdd+1);
-    auto telemetry = new char[sizeof(ss)/8];
+    //auto telemetry = new char[sizeof(ss)/8];
+    char telemetry[sizeof(ss)/8];
     ss>>telemetry;
     std::cout<<telemetry<<std::endl;
     return *telemetry;
