@@ -101,8 +101,8 @@ double PrintStats(vector<CPUData> & entries1, vector<CPUData> & entries2) {
         double TOTAL_TIME = ACTIVE_TIME + IDLE_TIME;
         _cp = 100.f * ACTIVE_TIME / TOTAL_TIME;
     }
-        return floor(_cp*100)/100;
-    }
+    return floor(_cp*100)/100;
+}
 
 double get_cpu(){
     vector<CPUData> entries1;
@@ -110,9 +110,5 @@ double get_cpu(){
     ReadStatsCPU(entries1);
     std::this_thread::sleep_for(std::chrono::milliseconds(200));
     ReadStatsCPU(entries2);
-    return PrintStats(entries1, entries2);
-}
-
-int cpu_num(){
-    return (int)sysconf(_SC_NPROCESSORS_ONLN);
+    return (PrintStats(entries1, entries2));
 }

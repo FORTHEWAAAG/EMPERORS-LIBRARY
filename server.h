@@ -5,21 +5,19 @@
 #include <netinet/in.h>
 #include <netdb.h>
 #include <arpa/inet.h>
-#include "proc.h"
-#include "memory.h"
+#include "telemetry.h"
 
 using std::cerr;
 
 class Server
 {
 private:
-    uint16_t port=44300;
+    uint16_t port=44301;
     uint32_t from_addr;
     uint32_t to_addr;
     struct sockaddr_in serverAddress, clientAddress;
 
 public:
-    char Format();
     Server();
     ~Server();
     void set_up();
@@ -69,23 +67,11 @@ bool Server::access(){
     return gethostbyname("127.0.0.1");
 }
 
-char Server::Format(){
-    double _num = cpu_num();
-    double _cpu = get_cpu();
-    double *_ram = process_mem_usage();
-    double *_load = _ram + 1;
-    double *_hdd = physical_mem_usage();
-    double *_eng = _hdd + 1;
-    using std::cout;
-    using std::endl;
-    cout <<*_ram<<endl<<*_load<<endl<<*_hdd<<endl<<*_eng<<endl;
-
-}
-
 bool Server::Snd(){
-    Format();
-    //char * message = Server::Format();
-    //return send(newsockfd, &message, sizeof(message), 0)==0;
+    auto *metrics =new data;
+    char message = metrics->telemetry_format();
+
+    return send(newsockfd, &message, sizeof(message), 0)==0;
 }
 
 void Server::off(){
