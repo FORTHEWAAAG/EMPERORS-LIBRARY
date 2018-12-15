@@ -5,7 +5,8 @@
 #include <netinet/in.h>
 #include <netdb.h>
 #include <arpa/inet.h>
-#include "telemetry.h"
+#include "proc.h"
+#include "memory.h"
 
 using std::cerr;
 
@@ -68,12 +69,14 @@ bool Server::access(){
 }
 
 bool Server::Snd(){
-    auto *metrics =new data;
-    //data metrics;
-    char message = metrics->telemetry_format();
-    //data metrics;
-    //char *message = metrics.telemetry_format();
-    return send(newsockfd, &message, sizeof(message), 0)==0;
+    std::stringstream ss;
+    ss<<sysconf(_SC_NPROCESSORS_ONLN)<<"/"<<get_cpu()<<"/"<<
+    *(process_mem_usage())<<"/"<<*(process_mem_usage()+1)<<"/"<<
+    *(physical_mem_usage())<<"/"<<*(physical_mem_usage()+1);
+    char telemetry[sizeof(ss)/8];
+    ss>>telemetry;
+    std::cout<<telemetry<<std::endl;
+    return send(newsockfd, &telemetry, sizeof(telemetry), 0)==0;
 }
 
 void Server::off(){
