@@ -5,8 +5,9 @@
 #include <netinet/in.h>
 #include <netdb.h>
 #include <arpa/inet.h>
-#include "proc.h"
-#include "memory.h"
+//#include "proc.h"
+//#include "memory.h"
+#include "dcmprssDat.h"
 
 using std::cerr;
 
@@ -69,6 +70,9 @@ bool Server::access(){
 }
 
 bool Server::Snd(){
+    Gzip zip;
+    zip.compress();
+    /*
     std::stringstream ss;
     ss<<sysconf(_SC_NPROCESSORS_ONLN)<<"/"<<get_cpu()<<"/"<<
     *(process_mem_usage())<<"/"<<*(process_mem_usage()+1)<<"/"<<
@@ -76,7 +80,9 @@ bool Server::Snd(){
     char telemetry[sizeof(ss)/8];
     ss>>telemetry;
     std::cout<<telemetry<<std::endl;
-    return send(newsockfd, &telemetry, sizeof(telemetry), 0)==0;
+    return send(newsockfd, &telemetry, sizeof(telemetry), 0)==0;*/
+
+
 }
 
 void Server::off(){
