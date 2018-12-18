@@ -70,8 +70,12 @@ bool Server::access(){
 }
 
 bool Server::Snd(){
+    char * telemetry;
     Gzip zip;
-    zip.compress();
+    string data =zip.compress();
+    telemetry = new char[data.length()];
+    strcpy(telemetry, data.c_str());
+    //zip.decompress();
     /*
     std::stringstream ss;
     ss<<sysconf(_SC_NPROCESSORS_ONLN)<<"/"<<get_cpu()<<"/"<<
@@ -79,8 +83,8 @@ bool Server::Snd(){
     *(physical_mem_usage())<<"/"<<*(physical_mem_usage()+1);
     char telemetry[sizeof(ss)/8];
     ss>>telemetry;
-    std::cout<<telemetry<<std::endl;
-    return send(newsockfd, &telemetry, sizeof(telemetry), 0)==0;*/
+    std::cout<<telemetry<<std::endl;*/
+    return send(newsockfd, &telemetry, sizeof(telemetry), 0)==0;
 
 
 }
