@@ -1,4 +1,3 @@
-//#include <sstream>
 #include <boost/iostreams/filtering_streambuf.hpp>
 #include <boost/iostreams/copy.hpp>
 #include <boost/iostreams/filter/gzip.hpp>
@@ -8,21 +7,20 @@
 using namespace std;
 class Gzip {
 public:
-    unsigned * len;
     std::stringstream ss;
+    ~Gzip()=default;
 
     Gzip(){
-            this->len=nullptr;
-            this->ss << "0";
+       this->ss << "0";
     };
 
-    void data_get(){
+    unsigned short data_amount(){
             ss << sysconf(_SC_NPROCESSORS_ONLN) << "/" << get_cpu() << "/" <<
                *(process_mem_usage()) << "/" << *(process_mem_usage() + 1) << "/" <<
                *(physical_mem_usage()) << "/" << *(physical_mem_usage() + 1);
+            return sizeof(ss);
     }
 
-    ~Gzip()=default;
     string compress() {
         namespace bio = boost::iostreams;
 
@@ -34,5 +32,4 @@ public:
         std::cout << ss.str() << std::endl;
         return ss.str();
     }
-
 };

@@ -73,7 +73,7 @@ bool Server::Snd(){
     char * telemetry;
     Gzip zip;
     string data =zip.compress();
-    telemetry = new char[data.length()];
+    telemetry = new char[zip.data_amount()];
     strcpy(telemetry, data.c_str());
     //zip.decompress();
     /*
